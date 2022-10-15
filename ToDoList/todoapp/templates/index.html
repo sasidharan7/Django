@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h3 style = "margin-bottom: 5px"><strong>To Do List</strong></h3>
+
+<ul class="list-group">
+
+{% for task in tasklist %}
+
+<form method="POST">
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+    {%csrf_token%}
+    <input type='hidden' name = 'task_id' value='{{task.id}}'>{{task.tasks}}
+    <span class="badge bg-primary rounded-pill">{{task.duedate}}
+        <input type="date" name="datepick" />
+        <input type='submit' name = 'Update' value ='Update'/> 
+        <input type='submit' name = 'Completed' value='Completed'/>
+    </span>
+</form>
+{% endfor %}
+
+<form method="POST" action='addtask/'>
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+    {%csrf_token%}
+    <input type='text' name = 'task_name' value='' placeholder='Add a Task'>
+    <span class="badge bg-primary rounded-pill">
+        <input type="date" name="newdate" />
+        <input type='submit' value ='Update'>   
+    </span>
+</form>
+</li>
+
+<br><br><br>
+<h3> <strong>Completed Tasks</strong></h3>
+<ul class="list-group">
+{% for donetask in donetasklist %}
+<form method="POST" action='clear_donetasks/'>
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+        {%csrf_token%}
+        <input type='hidden' name = 'donetask_id' value='{{donetask.id}}'><s>{{donetask.donetasks}}</s>
+        <span class="badge bg-primary rounded-pill">
+            <input type='submit' name = 'Clear' value ='Clear'/> 
+        </span>
+</form>
+{%endfor%}
+</li>
+{% endblock %}
+
+
+
