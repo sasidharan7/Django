@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+
+
+
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Sasi Dharan</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="{% static 'css/main.css' %}">
+        <script src="https://code.jquery.com/jquery.js"></script>
+
+    </head>
+
+    <body>
+        {% for profile in profiles %}
+        <div class="modal-body">
+
+     
+        </div>
+        <div id="container--main" >
+            <div>
+
+            <section id="wrapper--hero" class="section--page">
+                
+                <form method = "post" action='section1_imgchange/' enctype="multipart/form-data"> 
+                    {% csrf_token %}
+                <div id="img_container1">
+                {% if profile.emp_image %}
+                <img id="profile-pic" src="{{profile.emp_image.url}}">
+                <input type="file" name="dpupload">
+                <input type="submit" name="picupload" value="Upload">
+                <input type="submit" name="deletepic" value="Delete pic" style="background-color:red">
+
+
+            
+                {% else %}
+                <img id="profile-pic" src="{% static 'img/emptyprofile.jpeg' %}">
+                <input type="file" name="dpupload">
+                <input type="submit" name="picupload" ">
+                {% endif %}
+
+                </form>
+            </div>
+                
+                
+            
+                <div id="headdiv" style="padding-right:400px">
+                    <h1 style="padding-right:400px" <input type="text" name="user-name" id="user-name">{{profile.name}}</input></h1>
+                    <p id="bio" >{{profile.biodescription}}</p>
+                    <p id="email">👉 {{profile.bioemail}}</p>
+                </div>  
+
+                        
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Edit Bio</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form method = "post" action='section1change/' enctype="multipart/form-data"> 
+                {% csrf_token %}
+                {{form1.as_p}}      
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" name = "namechange" class="btn btn-primary">Save changes</button>
+        </form> 
+        </div>
+      </div>
+    </div>
+  </div>
+            </section>
+
+            <section class="section--page">
+
+                <div id="socials--list">
+                    <a href="{{profile.stackoverflow}}" target="_blank">StackOverflow</a>
+                    <a href="{{profile.linkedin}}" target="_blank">Linkedin</a>
+                    <a href="{{profile.github}}" target="_blank">Github</a>
+                    <a href="{{profile.resume}}" target="_blank">Download Resume</a>
+                </div>
+            </section>
+<button type="button" class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#exampleModal">Edit bio</button>
+</div>
+
+<!-- Section 1 ends here -->
+
+<!-- Section 2 starts here -->
+
+            <section class="section--page" >
+                <h2>Skills & Qualifications</h2>
+                <ul id="qualifications--list">
+                    {% for userskill in userskills %}
+                    <form method = "post" action='section2update/{{userskill.id}}' enctype="multipart/form-data">
+                    {% csrf_token %} 
+                    <p> ✅ {{userskill.skill}}</p>
+                
+
+                    {% endfor %}
+                </ul>
+                
+                <div class="modal fade" id="sec2Modaladdname" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">Edit Bio</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+
+                        </div>
+                        <div class="modal-body">
+                            
+                                
+                            {% for userskill in userskills %}
+                            <form method = "post" action='section2update/{{userskill.id}}' enctype="multipart/form-data">
+                                {% csrf_token %} 
+                            <input type="text" id = {{userskill.id}} name = "text/{{userskill.id}}" value= "{{userskill.skill}}" ></input>  
+                            <input type="submit" name = "Update/{{userskill.id}}" value= "Update"  ></input></a>
+                            <input type="submit" name = "Delete/{{userskill.id}}" value= "Delete" ></input>
+                            {% if forloop.last %}
+                            <input type="text" name = "addnewskill" ></input>  
+                            <input type="submit" name = "Addskill" value= "Add new"></input> 
+                            {% endif %}
+                           
+                            
+                        </div>
+                        <div class="modal-header">
+                          
+                          
+                        </form> 
+                        {% endfor %} 
+                        
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <button type="button" class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#sec2Modaladdname">Add Skills & Qualifications</button> 
+<br>
+            
+<!-- Section 2 ends here -->
+
+
+<!-- Section 3 starts here -->
+
+            <section class="section--page">
+                <h2>Tech stack</h2>
+                <div id="wrapper--techstack__items">
+                    <div class="card--techstack"><span>Python, JavaScript, NodeJS</span></div>
+                    <div class="card--techstack"><span>Django, Express, Flask, FastAPI</span></div>
+                    <div class="card--techstack"><span>React, Next JS</span></div>
+                    <div class="card--techstack"><span>Postgres, MongoDB, MySQL</span></div>
+                </div>
+            </section>
+<!-- Section 3 ends here -->
+
+<!-- Section 4 starts here -->
+    <section id="work-history-wrapper" class="section--page">
+    <h2>Work History</h2>
+    {% for history in histories %}
+    <div class="line-break"></div>
+    <div class="card--work-history">
+        <strong>🚧 {{history.title}} | {{history.company}}</strong>
+        <p>{{history.startdate}} - {{history.enddate}}</p>
+        <p>{{history.historydesc}}</p>
+        <ul>
+            {% for historyline in historylines %}
+            {% if historyline.relhistory == history %}
+            <li>{{historyline.historyline}}</li>
+            {% endif %}
+            {% endfor %}     
+        </ul>
+            <div class="modal fade" id="sec4Modal{{forloop.counter}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Edit Bio</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+
+                    </div>
+                    <div class="modal-body">
+                      <form method = "post" action='section4update/{{history.id}}' enctype="multipart/form-data">
+                            {% csrf_token %} 
+                        
+                        <input type="text" name = "title/{{history.id}}" value= "{{history.title}}" </input>  
+                        <input type="text" name = "company/{{history.id}}" value= "{{history.company}}" </input>
+                        <input type="date" name = "startdate/{{history.id}}" value= "{{history.startdate|date:"Y-m-d"}}" </input>
+                        <input type="date" name = "enddate/{{history.id}}" value= "{{history.enddate|date:"Y-m-d"}}" </input><br><br>
+                        <h5>Description</h5>
+                        <input type="text" size = "40" name = "historydesc/{{history.id}}" value= "{{history.historydesc}}" </input><br><br>
+                        
+                        <h5>Achievements</h5>
+                        {% for historyline in historylines %}
+                        {% if historyline.relhistory == history %}
+                        <input type="text" size = "40" name = "historyline{{historyline.id}}" value= "{{historyline.historyline}}" </input>
+            
+                        <a href="{% url 'hl' historyline.id %}">Delete</a><br>
+                        {% endif %}
+
+                        {% if forloop.last %}
+                        <input type="text" name = "addnewachievement" ></input> 
+                        <input type="submit" name = "Addachievement/{{history.id}}" value= "Add new achievement" ></input><br><br>
+                        {% endif %}
+
+                        {% endfor %}
+                        <input type="submit" name = "section4update/{{history.id}}" value= "Update"  </input></a>
+                        <input type="submit" name = "section4delete/{{history.id}}" value= "Delete this history" </input>
+
+
+                         
+                    </div>
+                    <div class="modal-footer">                              
+                    </form> 
+                                
+                    </div>
+                    </div>
+                </div>
+                </div>
+                <button type="button" id= "buttonid/{{forloop.counter}}" class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#sec4Modal{{forloop.counter}}" >Edit this history</button> 
+        <br>    
+
+            </div>
+            {% endfor %}
+
+
+
+            <div class="modal fade" id="sec4ModalAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Edit Bio</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+
+                    </div>
+                    <div class="modal-body">
+                      <form method = "post" action='section4add/' enctype="multipart/form-data">
+                            {% csrf_token %} 
+                        
+                        Title<input type="text" placeholder = "e.g: Software Engineer" name = "historytitle"  </input><br>
+                        Company<input type="text" placeholder = "e.g: Google" name = "historycompany" </input><br>
+                        StartDate <input type="date" placeholder = "e.g: StartDate" name = "historystartdate" </input><br>
+                        EndDate <input type="date" name = "historyenddate"  </input><br><br> 
+                        <h5>Description</h5>
+                        <input type="text" size = "40"  name = "historydesc" </input><br><br>
+                        
+                        <h5>Achievements</h5>
+            
+                        <input type="text" size = "40"  name = "historyachieve" </input><br> 
+                        
+                        <input type="submit" name = "Update/{{userskill.id}}" value= "Update"  </input></a>
+                        
+
+                        {% if forloop.last %}
+                        <input type="text" name = "addnewskill" ></input>  
+                        <input type="submit" name = "Addskill" value= "Add new"> </input> 
+                        {% endif %}              
+                    </div>
+                    <div class="modal-footer">                              
+                    </form> 
+                                
+                    </div>
+                    </div>
+                </div>
+                </div>
+                <button type="button" class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#sec4ModalAdd" >Add a history</button> 
+                
+        <br>    
+
+
+            </section>
+
+<!-- Section 4 ends here -->
+
+<!-- Section 5 starts here -->
+
+            <section class="section--page">
+                <h2>Hobbies & Interests</h2>
+
+                {% for hobbyline in hobbies %}
+                <div class="card--project">
+                    🏆 {{hobbyline.hobby}}
+                </div>
+                {% endfor %}
+                
+            
+            
+                <div class="modal fade" id="sec5ModalAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Edit Hobbies & Interests</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+    
+                        </div>
+                        <div class="modal-body">
+                          <form method = "post" action='section5update/' enctype="multipart/form-data">
+                                {% csrf_token %} 
+
+                                {% for hobbyline in hobbies %}
+                                
+                                <input type="text" size = "40" name = "hobby{{hobbyline.id}}" value= "{{hobbyline.hobby}}" </input>
+                    
+                                <a href="{% url 'hob' hobbyline.id %}">Delete</a><br>
+                                
+        
+                                {% if forloop.last %}
+                                <input type="text" name = "addnewhobby" ></input> 
+                                <input type="submit" name = "addhobbybutton" value= "Add new hobby" ></input><br><br>
+                                {% endif %} 
+        
+                                {% endfor %}
+                                <input type="submit" name = "section5update" value= "Update"  </input></a>
+                          
+                        </div>
+                        <div class="modal-footer">                              
+                        </form> 
+                                    
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+
+                <button type="button" class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#sec5ModalAdd" >Edit hobbies and interests</button> 
+
+
+
+
+            </section>
+
+        </div>
+        {% endfor %}
+
+
+
+  {% endblock %}  
+      
+    </body>
+</html>
